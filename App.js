@@ -5,7 +5,7 @@ import ValidForm from './components/ValidForm';
 import BasicForm from './components/BasicForm';
 
 const App = () => {
-  return <BasicForm />;
+  return <ValidForm />;
 };
 
 export default App;
