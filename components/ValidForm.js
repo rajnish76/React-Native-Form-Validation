@@ -9,7 +9,7 @@ import {
   Switch,
 } from 'react-native';
 import { Formik } from 'formik';
-import * as yup from 'yup';
+import Schema from './Schema';
 
 const FieldWrapper = ({ children, label, formikProps, formikKey }) => (
   <View style={{ marginHorizontal: 20, marginVertical: 5 }}>
@@ -57,31 +57,6 @@ const StyledSwitch = ({ formikKey, formikProps, label, ...rest }) => (
   </FieldWrapper>
 );
 
-const validationSchema = yup.object().shape({
-  email: yup.string().label('Email').email().required(),
-  password: yup
-    .string()
-    .label('Password')
-    .required()
-    .min(2, 'Seems a bit short...')
-    .max(10, 'We prefer insecure system, try a shorter password.'),
-  confirmPassword: yup
-    .string()
-    .required()
-    .label('Confirm password')
-    .test('passwords-match', 'Passwords must match ya fool', function (value) {
-      return this.parent.password === value;
-    }),
-  agreeToTerms: yup
-    .boolean()
-    .label('Terms')
-    .test(
-      'is-true',
-      'Must agree to terms to continue',
-      (value) => value === true,
-    ),
-});
-
 const signUp = ({ email }) =>
   new Promise((resolve, reject) => {
     setTimeout(() => {
@@ -118,7 +93,7 @@ const ValidForm = () => {
       <Formik
         initialValues={INITIAL_VALUES}
         onSubmit={onSubmit}
-        validationSchema={validationSchema}>
+        validationSchema={Schema}>
         {(formikProps) => (
           <React.Fragment>
             <StyledInput
@@ -152,7 +127,7 @@ const ValidForm = () => {
             />
 
             {formikProps.isSubmitting ? (
-              <ActivityIndicator />
+              <ActivityIndicator color="red" />
             ) : (
               <React.Fragment>
                 <Button title="Submit" onPress={formikProps.handleSubmit} />
